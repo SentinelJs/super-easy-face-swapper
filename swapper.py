@@ -155,7 +155,7 @@ def change(image1, image2_):
 
     (x3, y3, w3, h3) = cv2.boundingRect(convexhull2)
     center_face2 = (int((x3 + x3 + w3) / 2), int((y3 + y3 + h3) / 2))
-    seamlessclone = cv2.seamlessClone(result, img2, img2_head_mask, center_face2, cv2.MONOCHROME_TRANSFER)
+    seamlessclone = cv2.seamlessClone(result, img2, img2_head_mask, center_face2, cv2.NORMAL_CLONE)
     seamlessclone = cv2.resize(seamlessclone, (image2_.shape[1], image2_.shape[0]))
 
     return seamlessclone
