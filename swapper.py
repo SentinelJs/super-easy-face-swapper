@@ -25,6 +25,10 @@ def detector(image, idx):
         face_landmarks = results.multi_face_landmarks[0]
         for i in range(len(face_landmarks.landmark)):
             data_point = face_landmarks.landmark[i]
+            if data_point.x > 1:
+                data_point.x = 0.99
+            if data_point.y > 1:
+                data_point.y = 0.99
             points.append(np.array((
                     data_point.x*annotated_image.shape[0],
                     data_point.y*annotated_image.shape[1]
@@ -126,6 +130,7 @@ def change(image1, image2_):
                         [tr2_pt2[0] - x2, tr2_pt2[1] - y2],
                         [tr2_pt3[0] - x2, tr2_pt3[1] - y2]], np.int32)
         cv2.fillConvexPoly(cropped_tr2_mask, points2, 255)
+        #print(img2.shape,[tr2_pt1, tr2_pt2, tr2_pt3], y2, y2 + h2, cropped_triangle2.shape, cropped_tr2_mask.shape)
         cropped_triangle2 = cv2.bitwise_and(cropped_triangle2, cropped_triangle2,
                                         mask=cropped_tr2_mask)
 
@@ -156,6 +161,7 @@ def change(image1, image2_):
     (x3, y3, w3, h3) = cv2.boundingRect(convexhull2)
     center_face2 = (int((x3 + x3 + w3) / 2), int((y3 + y3 + h3) / 2))
     seamlessclone = cv2.seamlessClone(result, img2, img2_head_mask, center_face2, cv2.NORMAL_CLONE)
+    #seamlessclone = result
     seamlessclone = cv2.resize(seamlessclone, (image2_.shape[1], image2_.shape[0]))
 
     return seamlessclone
